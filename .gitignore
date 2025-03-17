@@ -12,3 +12,4 @@ appsettings.*.json
 *.suo
 
 .idea/
+.DS_Store
