@@ -19,13 +19,13 @@ public class Employee
     /// <summary>
     /// 員工信箱：必要欄位
     /// </summary>
-    [Required]
+    [Required, MaxLength(256)]
     public string Email { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// 密碼：必要欄位，且是加密過的值
     /// </summary>
-    [Required]
+    [Required, MaxLength(256)]
     public string PasswordHash { get; set; } = string.Empty;
     
     /// <summary>
@@ -36,5 +36,5 @@ public class Employee
     /// <summary>
     /// 員工資料修改的間，預設值是修改的當下
     /// </summary>
-    public DateTimeOffset? ModifiedOn { get; set; }
+    public DateTimeOffset? ModifiedOn { get; set; } = DateTimeOffset.UtcNow;
 }
