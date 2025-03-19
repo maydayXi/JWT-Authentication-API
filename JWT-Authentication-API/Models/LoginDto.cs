@@ -1,9 +1,9 @@
 namespace JWT_Authentication_API.Models;
 
 /// <summary>
-/// 註冊使用者的資料模型
+/// 使用者登入的資料模型
 /// </summary>
-public class RegisterDto
+public class LoginDto
 {
     /// <summary>
     /// 使用者帳號

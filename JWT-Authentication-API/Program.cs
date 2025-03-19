@@ -1,4 +1,6 @@
 using JWT_Authentication_API.Entities;
+using JWT_Authentication_API.Interfaces;
+using JWT_Authentication_API.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -32,6 +34,12 @@ builder.Services.AddControllers();
 builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
+#endregion
+
+#region CustomService
+builder.Services
+    .AddScoped<IEmployeeService, EmployeeService>()
+    .AddScoped<IAuthService, AuthService>();
 #endregion
 
 WebApplication app = builder.Build();
