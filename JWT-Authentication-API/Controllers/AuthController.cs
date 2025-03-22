@@ -11,11 +11,13 @@ namespace JWT_Authentication_API.Controllers;
 /// </summary>
 /// <param name="employeeService"> 員工資料存取服務 </param>
 /// <param name="authService"> 登入驗證服務 </param>
+/// <param name="tokenService"> Token 相關服務 </param>
 /// <param name="jwtHelper"> JWT 輔助工具 </param>
 [ApiController, Route("api/[controller]")]
 public class AuthController(
     IEmployeeService employeeService, 
     IAuthService authService,
+    ITokenService tokenService,
     JwtHelper jwtHelper) : Controller 
 {
     /// <summary>
@@ -27,6 +29,10 @@ public class AuthController(
     /// </summary>
     private readonly IAuthService _authService = authService;
     /// <summary>
+    /// Token 相關服務
+    /// </summary>
+    private readonly ITokenService _tokenService = tokenService;
+    /// <summary>
     /// JWT 輔助工具，負責生成 JWT
     /// </summary>
     private readonly JwtHelper _jwtHelper = jwtHelper;
@@ -36,7 +42,7 @@ public class AuthController(
     /// 註冊 API
     /// </summary>
     /// <param name="registerDto"> 使用者傳送的員工註冊資料 </param>
-    /// <returns> 註冊完成的員工資料 </returns>
+    /// <returns> 註冊結果 </returns>
     [HttpPost("register")]
     public async Task<ActionResult> RegisterAsync(RegisterDto registerDto)
     {
@@ -62,6 +68,7 @@ public class AuthController(
     }
     #endregion
 
+    #region 登入
     /// <summary>
     /// 登入
     /// </summary>
@@ -88,4 +95,28 @@ public class AuthController(
         
         return Ok(jwt);
     }
+    #endregion
+
+    #region 登出
+    /// <summary>
+    /// 登出
+    /// </summary>
+    /// <returns> 登出結果 </returns>
+    [HttpPost("logout")]
+    public async Task<IActionResult> LogoutAsync()
+    {
+        // 從 header 讀取 JWT
+        var token = $"{HttpContext.Request.Headers.Authorization}"
+            .Replace("Bearer", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Trim();
+        if (string.IsNullOrEmpty(token))
+            return BadRequest("Not token provided!");
+        
+        // 將 JWT 加入黑名單
+        var result = await _tokenService.AddTokenToTokenBlackListAsync(token);
+        if (!result) return BadRequest("Logout failed!");
+        
+        return Ok("Logout successfully!");
+    } 
+    #endregion
 }

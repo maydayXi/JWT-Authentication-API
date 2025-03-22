@@ -13,4 +13,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     /// 員工資料表
     /// </summary>
     public DbSet<Employee> Employees { get; set; }
+    /// <summary>
+    /// Token 黑名單資料表
+    /// </summary>
+    public DbSet<TokenBlackList> TokenBlackLists { get; set; }
 }

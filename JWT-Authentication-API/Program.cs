@@ -42,6 +42,7 @@ builder.Services
 builder.Services
     .AddScoped<IEmployeeService, EmployeeService>()
     .AddScoped<IAuthService, AuthService>()
+    .AddScoped<ITokenService, TokenService>()
     // 註冊這個 JwtOptions 的物件，並封裝成 IOptions 型別，讓其他類別可以注入使用
     .Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
 // 註冊 JwtHelper
