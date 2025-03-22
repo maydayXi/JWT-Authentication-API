@@ -1,3 +1,4 @@
+using JWT_Authentication_API.Helper;
 using JWT_Authentication_API.Interfaces;
 using JWT_Authentication_API.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace JWT_Authentication_API.Controllers;
 /// </summary>
 /// <param name="employeeService"> 員工資料存取服務 </param>
 /// <param name="authService"> 登入驗證服務 </param>
+/// <param name="jwtHelper"> JWT 輔助工具 </param>
 [ApiController, Route("api/[controller]")]
 public class AuthController(
     IEmployeeService employeeService, 
-    IAuthService authService) : Controller 
+    IAuthService authService,
+    JwtHelper jwtHelper) : Controller 
 {
     /// <summary>
     /// 員工資料存取的服務
@@ -23,7 +26,12 @@ public class AuthController(
     /// 登入驗證的服務
     /// </summary>
     private readonly IAuthService _authService = authService;
+    /// <summary>
+    /// JWT 輔助工具，負責生成 JWT
+    /// </summary>
+    private readonly JwtHelper _jwtHelper = jwtHelper;
     
+    #region 註冊
     /// <summary>
     /// 註冊 API
     /// </summary>
@@ -52,6 +60,7 @@ public class AuthController(
                 ? BadRequest("User already exists!")
                 : BadRequest("Failed to register user");
     }
+    #endregion
 
     /// <summary>
     /// 登入
@@ -59,20 +68,24 @@ public class AuthController(
     /// <param name="loginDto"> 使用者的輸入資料 </param>
     /// <returns> 登入結果 </returns>
     [HttpPost("login")]
-    public async Task<string> LoginAsync(LoginDto loginDto)
-    {
+    public async Task<ActionResult<string>> LoginAsync(LoginDto loginDto)
+    { 
         // 登入資料驗證
         if (string.IsNullOrEmpty(loginDto.Email) || 
             string.IsNullOrEmpty(loginDto.Password))
-            return "Please provide 'Email' and 'Password'";
+            return BadRequest("Please provide 'Email' and 'Password'");
         
         // 檢查員工帳號
         if (await _employeeService.GetEmployeeByEmailAsync(loginDto.Email) == null) 
-            return "User does not exist!";
+            return BadRequest("User does not exist!");
         
         // 檢查員工密碼並回傳登入結果
-        return await _authService.ValidateUserAsync(loginDto)
-            ? "jwt-token"
-            : "Login failed";
+        if (!await _authService.ValidateUserAsync(loginDto))
+            return BadRequest("Login failed!");
+        
+        // 產生 Jwt 
+        var jwt = _jwtHelper.CreateJwt(loginDto);
+        
+        return Ok(jwt);
     }
 }

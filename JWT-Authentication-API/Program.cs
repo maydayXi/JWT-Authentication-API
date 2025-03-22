@@ -1,5 +1,7 @@
 using JWT_Authentication_API.Entities;
+using JWT_Authentication_API.Helper;
 using JWT_Authentication_API.Interfaces;
+using JWT_Authentication_API.Options;
 using JWT_Authentication_API.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -39,7 +41,11 @@ builder.Services
 #region CustomService
 builder.Services
     .AddScoped<IEmployeeService, EmployeeService>()
-    .AddScoped<IAuthService, AuthService>();
+    .AddScoped<IAuthService, AuthService>()
+    // 註冊這個 JwtOptions 的物件，並封裝成 IOptions 型別，讓其他類別可以注入使用
+    .Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+// 註冊 JwtHelper
+builder.Services.AddSingleton<JwtHelper>();
 #endregion
 
 WebApplication app = builder.Build();
