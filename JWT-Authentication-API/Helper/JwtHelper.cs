@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using JWT_Authentication_API.Interfaces;
 using JWT_Authentication_API.Models;
 using JWT_Authentication_API.Options;
 using Microsoft.Extensions.Options;
@@ -17,7 +18,7 @@ public class JwtHelper(IOptions<JwtOptions> jwtOptions)
     /// Jwt 的相關設定
     /// </summary>
     private readonly JwtOptions _jwtOptions = jwtOptions.Value;
-
+    
     /// <summary>
     /// 產生 JWT
     /// </summary>
@@ -34,8 +35,7 @@ public class JwtHelper(IOptions<JwtOptions> jwtOptions)
             // 使用者帳號作為識別
             new(JwtRegisteredClaimNames.Sub, loginDto.Email),
             // Token 的有效期限，從現在開始到 5 分鐘後
-            new(JwtRegisteredClaimNames.Exp, $"{now.AddMinutes(_jwtOptions.Expiry)
-                .ToUnixTimeSeconds()}"),
+            new(JwtRegisteredClaimNames.Exp, $"{now.AddMinutes(_jwtOptions.Expiry).ToUnixTimeSeconds()}"),
             // 這個 JWT 的識別
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             // 這個 JWT 的發行時間
@@ -53,7 +53,7 @@ public class JwtHelper(IOptions<JwtOptions> jwtOptions)
             issuer: _jwtOptions.Issuer,             // issuer
             claims: userClaimsIdentity.Claims,      // payload 
             signingCredentials: credentials,        // signature
-            expires: now.AddMinutes(_jwtOptions.Expiry).DateTime);  // expiry time
+            expires: now.AddMinutes(_jwtOptions.Expiry).UtcDateTime);  // expiry time
         
         // 輸出 JWT 並轉換成字串
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
