@@ -11,15 +11,15 @@ public class TokenBlackList
     /// <summary>
     /// 資料識別（PK）
     /// </summary>
-    [Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     /// <summary>
     /// 使用過的 Token
     /// </summary>
-    [Required]
+    [Required, MaxLength(2048)]
     public string Token { get; set; } = string.Empty;
     /// <summary>
     /// 資料新增的時間，也是 Token 過期的時間
     /// </summary>
-    public DateTimeOffset CreateTime { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset CreateTime { get; init; } = DateTimeOffset.Now;
 }

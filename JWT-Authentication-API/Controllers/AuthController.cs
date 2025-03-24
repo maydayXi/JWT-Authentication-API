@@ -1,6 +1,7 @@
 using JWT_Authentication_API.Helper;
 using JWT_Authentication_API.Interfaces;
 using JWT_Authentication_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JWT_Authentication_API.Controllers;
@@ -75,8 +76,8 @@ public class AuthController(
     /// <param name="loginDto"> 使用者的輸入資料 </param>
     /// <returns> 登入結果 </returns>
     [HttpPost("login")]
-    public async Task<ActionResult<string>> LoginAsync(LoginDto loginDto)
-    { 
+    public async Task<ActionResult> LoginAsync(LoginDto loginDto)
+    {
         // 登入資料驗證
         if (string.IsNullOrEmpty(loginDto.Email) || 
             string.IsNullOrEmpty(loginDto.Password))
@@ -102,6 +103,7 @@ public class AuthController(
     /// 登出
     /// </summary>
     /// <returns> 登出結果 </returns>
+    [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> LogoutAsync()
     {

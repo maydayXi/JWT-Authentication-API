@@ -1,9 +1,12 @@
+using System.Text;
 using JWT_Authentication_API.Entities;
 using JWT_Authentication_API.Helper;
 using JWT_Authentication_API.Interfaces;
 using JWT_Authentication_API.Options;
 using JWT_Authentication_API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -49,6 +52,40 @@ builder.Services
 builder.Services.AddSingleton<JwtHelper>();
 #endregion
 
+#region Authentication Service
+builder.Services
+    // 啟用 JWT 驗證 
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    // Jwt 驗證選項
+    .AddJwtBearer(options =>
+    {
+        // 不使用 Dependency Injection 方式讀取設定檔
+        var jwtOptions = builder.Configuration.GetSection(
+            nameof(JwtOptions)).Get<JwtOptions>()!;
+        
+        // 回應 JWT 詳細錯誤訊息，方便 Debug，所以只有在非正式環境開啟
+        options.IncludeErrorDetails = true;
+        // JWT 驗證規則
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // 驗證發行單位
+            ValidateIssuer = true,
+            ValidIssuer = jwtOptions.Issuer,
+            
+            // 不驗證接收單位，不需要瞼證要改成 false, 原始預設是 true
+            ValidateAudience = false,
+            
+            // 驗證有效期限
+            ValidateLifetime = true,
+            
+            // 驗證金鑰
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+        };
+    });
+#endregion
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,4 +106,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 // 啟用控制器的 Route
 app.MapControllers();
+// 啟用驗證機制
+app.UseAuthentication().UseAuthorization();
 app.Run();
