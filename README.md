@@ -123,5 +123,5 @@ Login failed
 
 Check out my detailed tutorial below:
 
-1. **[Implementation JWT with ASP.NET Core](https://maydayxi.github.io/MyDevLog/posts/asp-dot-net-core-jwt-tutorial/)**
-2. **[Implementation JWT Refresh Token with ASP.NET Core](https://maydayxi.github.io/MyDevLog/posts/asp-net-core-jwt-tutorial-refresh-token/)**
+1. **[Implementing JWT Authentication in ASP.NET Core](https://maydayxi.github.io/MyDevLog/posts/asp-dot-net-core-jwt-tutorial/)**
+2. **[Implementing JWT Refresh Token in ASP.NET Core](https://maydayxi.github.io/MyDevLog/posts/asp-net-core-jwt-tutorial-refresh-token/)**
