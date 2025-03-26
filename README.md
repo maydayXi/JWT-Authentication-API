@@ -13,6 +13,9 @@ The project showcases how to secure API endpoints using JWT to ensure proper aut
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Installation and Setup](#installation-and-setup)
+- [Usage](#usage)
+- [Tech Stack](#tech-stack)
+- [Learn More](#learn-more)
 
 ## Project Overview
 
@@ -111,12 +114,12 @@ Login failed
 
 ## Tech Stack
 
-- **.NET8**: The framework used for building the Web API.
+- **.NET8**: ![.NET Version](https://img.shields.io/badge/.NET-8.0-blue) The framework used for building the Web API.
 - **JWT(JSON Web Token)**: Authentication mechanism used to secure API routes.
 - **Entity Framework Core**: ORM for interacting with Database.
 - **ASP.NET Core**: Web API framework.
 
-## Learn More 
+## Learn More
 
 Check out my detailed tutorial below:
 
