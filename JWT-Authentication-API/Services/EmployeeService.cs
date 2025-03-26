@@ -12,6 +12,9 @@ namespace JWT_Authentication_API.Services;
 /// </summary>
 public class EmployeeService(AppDbContext dbContext) : IEmployeeService
 {
+    /// <summary>
+    /// 資料庫對映物件
+    /// </summary>
     private readonly AppDbContext _appDb = dbContext;
 
     /// <summary>
@@ -43,17 +46,18 @@ public class EmployeeService(AppDbContext dbContext) : IEmployeeService
     /// </summary>
     /// <param name="email"> 登入信箱/註冊信箱 </param>
     /// <returns> 員工資料 或 null </returns>
-    public async Task<RegisterDto?> GetEmployeeByEmailAsync(string email)
+    public async Task<EmployeeDto?> GetEmployeeByEmailAsync(string email)
     {
         var employee = await _appDb.Employees
             .FirstOrDefaultAsync(e => e.Email == email);
         
         return employee == null 
             ? null 
-            : new RegisterDto
+            : new EmployeeDto
             {
-                Email = employee.Email, 
-                Password = employee.PasswordHash
+                Email = employee.Email,
+                PasswordHash = employee.PasswordHash,
+                EmployeeRole = employee.UserRole
             };
     }
 }

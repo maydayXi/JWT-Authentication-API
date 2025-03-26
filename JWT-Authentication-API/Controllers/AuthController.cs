@@ -44,6 +44,7 @@ public class AuthController(
     /// </summary>
     /// <param name="registerDto"> 使用者傳送的員工註冊資料 </param>
     /// <returns> 註冊結果 </returns>
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult> RegisterAsync(RegisterDto registerDto)
     {
@@ -71,10 +72,11 @@ public class AuthController(
 
     #region 登入
     /// <summary>
-    /// 登入
+    /// 登入 API
     /// </summary>
     /// <param name="loginDto"> 使用者的輸入資料 </param>
     /// <returns> 登入結果 </returns>
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult> LoginAsync(LoginDto loginDto)
     {
@@ -84,15 +86,16 @@ public class AuthController(
             return BadRequest("Please provide 'Email' and 'Password'");
         
         // 檢查員工帳號
-        if (await _employeeService.GetEmployeeByEmailAsync(loginDto.Email) == null) 
+        var employee = await _employeeService.GetEmployeeByEmailAsync(loginDto.Email);
+        if (employee == null) 
             return BadRequest("User does not exist!");
         
         // 檢查員工密碼並回傳登入結果
-        if (!await _authService.ValidateUserAsync(loginDto))
+        if (!_authService.ValidateUserAsync(loginDto, employee))
             return BadRequest("Login failed!");
         
         // 產生 Jwt 
-        var jwt = _jwtHelper.CreateJwt(loginDto);
+        var jwt = _jwtHelper.CreateJwt(employee);
         
         return Ok(jwt);
     }
@@ -100,7 +103,7 @@ public class AuthController(
 
     #region 登出
     /// <summary>
-    /// 登出
+    /// 登出 API
     /// </summary>
     /// <returns> 登出結果 </returns>
     [Authorize]

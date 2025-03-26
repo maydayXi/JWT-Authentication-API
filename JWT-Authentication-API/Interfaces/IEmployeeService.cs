@@ -18,6 +18,6 @@ public interface IEmployeeService
     /// 依帳號取得員工資料
     /// </summary>
     /// <param name="email"> 員工帳號 </param>
-    /// <returns> 登入資料，如果使用者不存在就 null </returns>
-    Task<RegisterDto?> GetEmployeeByEmailAsync(string email);
+    /// <returns> 員山資料，如果使用者不存在就 null </returns>
+    Task<EmployeeDto?> GetEmployeeByEmailAsync(string email);
 }

@@ -22,9 +22,9 @@ public class JwtHelper(IOptions<JwtOptions> jwtOptions)
     /// <summary>
     /// 產生 JWT
     /// </summary>
-    /// <param name="loginDto"> 使用者的登入資訊 </param>
+    /// <param name="employee"> 員工的登入資訊 </param>
     /// <returns> JSON Web Token </returns>
-    public string CreateJwt(LoginDto loginDto)
+    public string CreateJwt(EmployeeDto employee)
     {
         var now = DateTimeOffset.UtcNow;
         
@@ -33,13 +33,15 @@ public class JwtHelper(IOptions<JwtOptions> jwtOptions)
             // 發行單位
             new(JwtRegisteredClaimNames.Iss, _jwtOptions.Issuer),
             // 使用者帳號作為識別
-            new(JwtRegisteredClaimNames.Sub, loginDto.Email),
+            new(JwtRegisteredClaimNames.Sub, employee.Email),
             // Token 的有效期限，從現在開始到 5 分鐘後
             new(JwtRegisteredClaimNames.Exp, $"{now.AddMinutes(_jwtOptions.Expiry).ToUnixTimeSeconds()}"),
             // 這個 JWT 的識別
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             // 這個 JWT 的發行時間
-            new(JwtRegisteredClaimNames.Iat, $"{now.ToUnixTimeSeconds()}")
+            new(JwtRegisteredClaimNames.Iat, $"{now.ToUnixTimeSeconds()}"),
+            // 員工角色
+            new(ClaimTypes.Role, $"{employee.EmployeeRole}", ClaimValueTypes.Integer)
         ];
         // 產生使用者身分證明
         ClaimsIdentity userClaimsIdentity = new(claims);

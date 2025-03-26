@@ -29,6 +29,11 @@ public class Employee
     public string PasswordHash { get; set; } = string.Empty;
     
     /// <summary>
+    /// 使用者角色
+    /// </summary>
+    public int UserRole { get; set; }
+    
+    /// <summary>
     /// 員工資料建立的時間，預設值是建立的當下
     /// </summary>
     public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
