@@ -62,7 +62,8 @@ builder.Services
         // 不使用 Dependency Injection 方式讀取設定檔
         var jwtOptions = builder.Configuration.GetSection(
             nameof(JwtOptions)).Get<JwtOptions>()!;
-        
+        // 要加入這個設定，不然 Sub 會變成 ClaimTypes.NameIdentifier
+        options.MapInboundClaims = false;
         // 回應 JWT 詳細錯誤訊息，方便 Debug，所以只有在非正式環境開啟
         options.IncludeErrorDetails = true;
         // JWT 驗證規則

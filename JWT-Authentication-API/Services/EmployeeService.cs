@@ -10,6 +10,7 @@ namespace JWT_Authentication_API.Services;
 /// <summary>
 /// 員工資料存取服務
 /// </summary>
+/// <param name="dbContext"> 資料庫對映物件 </param>
 public class EmployeeService(AppDbContext dbContext) : IEmployeeService
 {
     /// <summary>
@@ -59,5 +60,19 @@ public class EmployeeService(AppDbContext dbContext) : IEmployeeService
                 PasswordHash = employee.PasswordHash,
                 EmployeeRole = employee.UserRole
             };
+    }
+
+    /// <summary>
+    /// 取得所有員工資料
+    /// </summary>
+    /// <returns> 所有員工資料 </returns>
+    public async Task<IEnumerable<EmployeeDto>?> GetEmployeesAsync()
+    {
+        // 從資料庫取得員工資料，由於資料量少，可以直接 ToList，當資料量大的時候建議實作分頁
+        return await _appDb.Employees.Select(e => new EmployeeDto
+        {
+            Email = e.Email,
+            EmployeeRole = e.UserRole
+        }).ToListAsync();
     }
 }
