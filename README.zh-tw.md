@@ -118,4 +118,5 @@ git clone https://github.com/maydayXi/JWT-Authentication-API.git
 
 到我的教學網看更多資訊
 
-1. **[Implementation JWT with ASP.NET Core](https://maydayxi.github.io/MyDevLog/posts/asp-dot-net-core-jwt-tutorial/)**
+1. **[ASP.NET Core 實作 JWT 認證](https://maydayxi.github.io/MyDevLog/posts/asp-dot-net-core-jwt-tutorial/)**
+2. **[ASP.NET Core 實作 JWT Refresh Token](https://maydayxi.github.io/MyDevLog/posts/asp-net-core-jwt-tutorial-refresh-token/)**
