@@ -68,7 +68,7 @@ If your database on local
 }
 ```
 
-then check out my detailed tutorial below to set up the database:
+You can check out my detailed tutorial below to set up the database:
 
 1. **[Add Database Migration](https://maydayxi.github.io/MyDevLog/posts/asp-dot-net-core-jwt-tutorial/#%E6%96%B0%E5%A2%9E-migration)**
 2. **[Update Database](https://maydayxi.github.io/MyDevLog/posts/asp-dot-net-core-jwt-tutorial/#%E6%9B%B4%E6%96%B0%E8%B3%87%E6%96%99%E5%BA%AB)**
@@ -115,7 +115,7 @@ Login failed
 ## Tech Stack
 
 - **.NET8**: ![.NET Version](https://img.shields.io/badge/.NET-8.0-blue) The framework used for building the Web API.
-- **JWT(JSON Web Token)**: Authentication mechanism used to secure API routes.
+- **JWT(JSON Web Token)**: Authentication user.
 - **Entity Framework Core**: ORM for interacting with Database.
 - **ASP.NET Core**: Web API framework.
 

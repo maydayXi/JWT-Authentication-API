@@ -58,7 +58,7 @@ git clone https://github.com/maydayXi/JWT-Authentication-API.git
 ```json
 {
   "ConnectionStrings": {
-    "JwtAuthDB": "Server=yourdbserverip,1433;Database=JwtAuthDB;user=yourdbuser;password=yourdbpassword;TrustServerCertificate=True;"
+    "JwtAuthDB": "Server=localhost,1433;Database=JwtAuthDB;user=yourdbuser;password=yourdbpassword;TrustServerCertificate=True;"
   }
 }
 ```
